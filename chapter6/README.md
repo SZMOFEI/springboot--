@@ -28,4 +28,6 @@
                registry.addInterceptor(new LoginInterceptor()).addPathPatterns("/**");
            }
        }
+       
+    注意springboot2.0版本使用方法  WEBmcvconfiguer
 ```

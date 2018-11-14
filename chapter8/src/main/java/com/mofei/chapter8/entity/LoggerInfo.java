@@ -1,9 +1,6 @@
 package com.mofei.chapter8.entity;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -11,10 +8,11 @@ import java.util.Date;
  * @author mofei
  * @date 2018/11/14 19:56
  */
+@Entity
 @Table(name="t_logger_infos")
 public class LoggerInfo implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ali_id")
     private Long aliId;
     @Column(name = "ali_client_ip")

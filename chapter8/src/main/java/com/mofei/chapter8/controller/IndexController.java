@@ -3,6 +3,7 @@ package com.mofei.chapter8.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.mofei.chapter8.util.LoggerUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +20,7 @@ public class IndexController {
      * 请求登陆
      * @param request
      */
-    @RequestMapping(value = "/login")
+    @RequestMapping(value = "/login",method = RequestMethod.GET)
     public JSONObject String (HttpServletRequest request, String name) {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("msg","用户名:"+name+"登陆成功");

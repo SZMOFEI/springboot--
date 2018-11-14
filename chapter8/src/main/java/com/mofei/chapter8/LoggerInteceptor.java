@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Date;
 
 /**
  * @author mofei
@@ -31,7 +32,8 @@ public class LoggerInteceptor implements HandlerInterceptor {
         log.setAliParamData(paramData);
         log.setAliClientIp(LoggerUtils.getCliectIp(request));
         log.setAliType(LoggerUtils.getRequestType(request));
-
+        log.setAliTime(new Date());
+        log.setAliMethod(request.getMethod());
         //设置请求开始时间
         request.setAttribute(LOGGER_SEND_TIME, System.currentTimeMillis());
         //设置请求实体到request内，方面afterCompletion方法调用
@@ -52,15 +54,15 @@ public class LoggerInteceptor implements HandlerInterceptor {
         long time = Long.valueOf(request.getAttribute(LOGGER_SEND_TIME).toString());
         log.setAliTimeConsuming(Integer.valueOf((currentTime - time) + ""));
         log.setAliReturmTime(currentTime + "");
-        String returnData = JSON.toJSONString(request.getAttribute(LoggerUtils.getRequestType(request)),
+
+        log.setAliReturnData(JSON.toJSONString(request.getAttribute(LoggerUtils.LOGGER_RETURN),
                 SerializerFeature.DisableCircularReferenceDetect,
-                SerializerFeature.WriteMapNullValue);
-        log.setAliReturnData(returnData);
-        LoggerJpa jpa = getDAO(LoggerJpa.class,request);
+                SerializerFeature.WriteMapNullValue));
+        LoggerJpa jpa = getDAO(LoggerJpa.class, request);
         jpa.save(log);
     }
 
-    private <T> T  getDAO(Class<T> clazz, HttpServletRequest request) {
+    private <T> T getDAO(Class<T> clazz, HttpServletRequest request) {
         BeanFactory beanFactory = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
         return beanFactory.getBean(clazz);
     }
