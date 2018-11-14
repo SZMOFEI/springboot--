@@ -12,6 +12,7 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 /**
  * @author mofei
@@ -28,7 +29,7 @@ public class LoginController {
         String result = "登陆成功";
         boolean flag = true;
         //你去查询一个用户回来，如果用户不存在，提示用户不存在，请重新登录
-        User user1 = userJpa.findOne( new Specification() {
+        Optional<User> user1 = userJpa.findOne(new Specification() {
             @Override
             public Predicate toPredicate(Root root, CriteriaQuery criteriaQuery, CriteriaBuilder criteriaBuilder) {
                 criteriaQuery.where(criteriaBuilder.equal(root.get("name"),user.getName()));
@@ -40,7 +41,7 @@ public class LoginController {
         if (user1 == null) {
             flag= false;
             result = "用户不存在";
-        }else if (!user1.getPassword().equals(user.getPassword())){
+        }else if (!user1.get().getPassword().equals(user.getPassword())){
         //2.密码错误
             flag= false;
             result = "密码错误";
